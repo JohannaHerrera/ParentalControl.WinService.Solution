@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ParentalControl.WinService")]
+[assembly: AssemblyTitle("ParentalControlWinServiceApp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ParentalControl.WinService")]
+[assembly: AssemblyProduct("ParentalControlWinServiceApp")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f66147a2-ed99-49da-8005-20fe9f7b2fd4")]
+[assembly: Guid("6ceaab2f-70b3-45a3-9c32-890cfe0c7a3a")]
 
 // Version information for an assembly consists of the following four values:
 //
