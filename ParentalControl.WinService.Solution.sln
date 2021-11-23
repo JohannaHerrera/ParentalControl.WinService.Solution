@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31105.61
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentalControl.WinService", "ParentalControl.WinService\ParentalControl.WinService.csproj", "{F66147A2-ED99-49DA-8005-20FE9F7B2FD4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentalControl.WinService.Business", "ParentalControl.WinService.Business\ParentalControl.WinService.Business.csproj", "{C358F7ED-0741-492E-8E6E-2218D04E51EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentalControl.WinService.Data", "ParentalControl.WinService.Data\ParentalControl.WinService.Data.csproj", "{77B02D84-244E-4FD7-8209-0FA81B36CB3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentalControl.WinService.Models", "ParentalControl.WinService.Models\ParentalControl.WinService.Models.csproj", "{D6F64883-0D30-4071-BAC7-0564EE79F1F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentalControl.WinService.WinFormDemo", "ParentalControl.WinService.WinFormDemo\ParentalControl.WinService.WinFormDemo.csproj", "{1C508E49-5A04-4AC0-BEE8-8D6C3DA47EF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentalControl.WinService.WinServiceLib", "ParentalControl.WinService.WinServiceLib\ParentalControl.WinService.WinServiceLib.csproj", "{233FEA1A-9AD1-4750-AA78-9CAC508D9AA2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F66147A2-ED99-49DA-8005-20FE9F7B2FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F66147A2-ED99-49DA-8005-20FE9F7B2FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F66147A2-ED99-49DA-8005-20FE9F7B2FD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F66147A2-ED99-49DA-8005-20FE9F7B2FD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C358F7ED-0741-492E-8E6E-2218D04E51EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C358F7ED-0741-492E-8E6E-2218D04E51EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C358F7ED-0741-492E-8E6E-2218D04E51EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C358F7ED-0741-492E-8E6E-2218D04E51EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77B02D84-244E-4FD7-8209-0FA81B36CB3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77B02D84-244E-4FD7-8209-0FA81B36CB3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77B02D84-244E-4FD7-8209-0FA81B36CB3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77B02D84-244E-4FD7-8209-0FA81B36CB3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6F64883-0D30-4071-BAC7-0564EE79F1F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6F64883-0D30-4071-BAC7-0564EE79F1F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6F64883-0D30-4071-BAC7-0564EE79F1F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6F64883-0D30-4071-BAC7-0564EE79F1F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C508E49-5A04-4AC0-BEE8-8D6C3DA47EF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C508E49-5A04-4AC0-BEE8-8D6C3DA47EF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C508E49-5A04-4AC0-BEE8-8D6C3DA47EF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C508E49-5A04-4AC0-BEE8-8D6C3DA47EF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{233FEA1A-9AD1-4750-AA78-9CAC508D9AA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{233FEA1A-9AD1-4750-AA78-9CAC508D9AA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{233FEA1A-9AD1-4750-AA78-9CAC508D9AA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{233FEA1A-9AD1-4750-AA78-9CAC508D9AA2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {098A0B8F-279C-44D0-9411-15319188C17C}
+	EndGlobalSection
+EndGlobal
