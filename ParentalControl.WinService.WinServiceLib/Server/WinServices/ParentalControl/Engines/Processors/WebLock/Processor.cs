@@ -1,5 +1,4 @@
-﻿using ParentalControl.WinService.Business.Mail;
-using ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalControl.Engines.Configuration;
+﻿using ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalControl.Engines.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

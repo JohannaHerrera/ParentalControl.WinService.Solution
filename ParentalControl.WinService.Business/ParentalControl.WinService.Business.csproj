@@ -36,6 +36,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DeviceId, Version=6.0.0.0, Culture=neutral, PublicKeyToken=f755c371b5c59c52, processorArchitecture=MSIL">
+      <HintPath>..\packages\DeviceId.6.0.0\lib\net40\DeviceId.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -50,7 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mail\MailNotification.cs" />
+    <Compile Include="Enums\Constants.cs" />
+    <Compile Include="ParentalControl\ApplicationBO.cs" />
+    <Compile Include="ParentalControl\DeviceBO.cs" />
+    <Compile Include="ParentalControl\EmailBO.cs" />
+    <Compile Include="ParentalControl\RequestBO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -61,6 +68,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -70,6 +78,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ParentalControl.WinService.Data\ParentalControl.WinService.Data.csproj">
+      <Project>{77B02D84-244E-4FD7-8209-0FA81B36CB3E}</Project>
+      <Name>ParentalControl.WinService.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParentalControl.WinService.Models\ParentalControl.WinService.Models.csproj">
+      <Project>{D6F64883-0D30-4071-BAC7-0564EE79F1F3}</Project>
+      <Name>ParentalControl.WinService.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
