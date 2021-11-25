@@ -90,6 +90,10 @@
       <Project>{C358F7ED-0741-492E-8E6E-2218D04E51EA}</Project>
       <Name>ParentalControl.WinService.Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ParentalControl.WinService.Models\ParentalControl.WinService.Models.csproj">
+      <Project>{D6F64883-0D30-4071-BAC7-0564EE79F1F3}</Project>
+      <Name>ParentalControl.WinService.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
