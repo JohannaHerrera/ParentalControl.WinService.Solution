@@ -12,7 +12,7 @@ namespace ParentalControl.WinService.Business.ParentalControl
     public class DeviceUseBO
     {
         /// <summary>
-        /// Obtiene el uso del dispositivo para un día especificado
+        /// Obtiene el uso del dispositivo para un día especificada
         /// </summary>
         /// <param name="infantId"></param>
         /// <param name="dia"></param>

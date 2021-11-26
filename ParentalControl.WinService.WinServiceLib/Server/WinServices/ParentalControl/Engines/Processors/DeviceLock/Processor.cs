@@ -30,7 +30,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
         {
             try
             {
-                // Se verifica que la cuenta de Windows actual esté vinculada a un infante.
+                // Se verifica que la cuenta de Windows actual esté vinculada a un infante..
                 DeviceBO deviceBO = new DeviceBO();
                 WindowsAccountModel windowsAccountModel = deviceBO.GetInfantAccount(Environment.UserName);
 

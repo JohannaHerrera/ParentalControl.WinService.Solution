@@ -20,6 +20,7 @@ namespace ParentalControl.WinService.Business.ParentalControl
             return scheduleModel;
         }
 
+        //hola
         public bool CompareScheduleWithSystemTime(int scheduleId)
         {
             ScheduleModel scheduleModel = GetSchedule(scheduleId);
