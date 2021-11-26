@@ -52,6 +52,8 @@
     <Compile Include="Device\ApplicationModel.cs" />
     <Compile Include="Device\DeviceModel.cs" />
     <Compile Include="Device\DeviceUseModel.cs" />
+    <Compile Include="Device\WebCategoryModel.cs" />
+    <Compile Include="Device\WebConfigurationModel.cs" />
     <Compile Include="Device\WindowsAccountModel.cs" />
     <Compile Include="InfantAccount\InfantAccountModel.cs" />
     <Compile Include="InfantAccount\ParentModel.cs" />

@@ -53,6 +53,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                             {
                                 if (app.AppName.ToUpper().Contains(process.ProcessName.ToUpper()))
                                 {
+                                    process.Kill();
                                     DialogResult res = MessageBox.Show("Esta aplicación está bloqueada. ¿Deseas solicitar el acceso?", "¡AVISO!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                                     
                                     if (res == DialogResult.Yes)
@@ -82,8 +83,8 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                             MessageBox.Show("Ocurrión un error al solicitar el acceso. Inténtelo de nuevo.");
                                         }
                                     }
-
-                                    process.Kill();
+                                    
+                                    
                                 }
                             }
                         }                        

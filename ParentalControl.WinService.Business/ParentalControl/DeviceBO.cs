@@ -22,7 +22,7 @@ namespace ParentalControl.WinService.Business.ParentalControl
         public WindowsAccountModel GetInfantAccount(string windowsAccountName)
         {
             string deviceCode = this.GetDeviceIdentifier();
-            string query = $"SELECT wa.WindowsAccountId, wa.WindowsAccountName, wa.InfantAccountId" +
+            string query = $"SELECT wa.WindowsAccountId, wa.WindowsAccountName, wa.InfantAccountId, wa.DevicePCId" +
                            $" FROM WindowsAccount wa INNER JOIN DevicePC pc" +
                            $" ON wa.DevicePCId = pc.DevicePCId" +
                            $" WHERE pc.DevicePCCode = '{deviceCode}'" +

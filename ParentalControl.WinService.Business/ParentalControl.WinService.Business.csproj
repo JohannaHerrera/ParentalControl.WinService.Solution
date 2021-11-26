@@ -58,6 +58,7 @@
     <Compile Include="ParentalControl\DeviceBO.cs" />
     <Compile Include="ParentalControl\EmailBO.cs" />
     <Compile Include="ParentalControl\RequestBO.cs" />
+    <Compile Include="ParentalControl\WebConfigurationBO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
