@@ -24,10 +24,16 @@ namespace ParentalControl.WinService.Business.ParentalControl
         public bool CompareScheduleWithSystemTime(int scheduleId)
         {
             ScheduleModel scheduleModel = GetSchedule(scheduleId);
-            DateTime horaInicio = scheduleModel.ScheduleStartTime;
-            DateTime horaFin = scheduleModel.ScheduleEndTime;
+            string horaInicio = scheduleModel.ScheduleStartTime.ToString();
+            string horaFin = scheduleModel.ScheduleEndTime.ToString();
+
             string horaActual = DateTime.Now.ToString("HH:mm");
+            
+
             DateTime.ParseExact(horaActual, "HH:mm", null);
+            DateTime.ParseExact(horaInicio, "HH:mm", null);
+            DateTime.ParseExact(horaFin, "HH:mm", null);
+
 
             if (horaActual.CompareTo(horaInicio) >= 0 && horaActual.CompareTo(horaFin) <= 0)
             {

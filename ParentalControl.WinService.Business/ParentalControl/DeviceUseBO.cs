@@ -20,7 +20,8 @@ namespace ParentalControl.WinService.Business.ParentalControl
         public List<DeviceUseModel> GetDeviceUse(int infantId, string dia)
         {
             string query = $"SELECT * FROM DeviceUse WHERE InfantAccountId = '{infantId}'" +
-                           $" AND DeviceUseDay = '{dia}'";
+                           $" AND DeviceUseDay = '{dia}'" +
+                           $" AND ScheduleId IS NOT NULL";
 
             List<DeviceUseModel> deviceUseModelList = this.ObtenerListaSQL<DeviceUseModel>(query).ToList();
 
