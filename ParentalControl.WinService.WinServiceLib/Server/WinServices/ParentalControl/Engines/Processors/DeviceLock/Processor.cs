@@ -1,9 +1,16 @@
-﻿using ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalControl.Engines.Configuration;
+﻿using ParentalControl.WinService.Business.ParentalControl;
+using ParentalControl.WinService.Models.Device;
+using ParentalControl.WinService.Models.InfantAccount;
+using ParentalControl.WinService.Models.ScheduleAccount;
+using ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalControl.Engines.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalControl.Engines.Processors.DeviceLock
 {
@@ -23,7 +30,37 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
         {
             try
             {
+                // Se verifica que la cuenta de Windows actual esté vinculada a un infante.
+                DeviceBO deviceBO = new DeviceBO();
+                WindowsAccountModel windowsAccountModel = deviceBO.GetInfantAccount(Environment.UserName);
 
+                // En el caso de estar vinculada a un infante se verifican las horas para proceder al bloqueo
+                // del dispositivo.
+                if (windowsAccountModel != null)
+                {
+                    ScheduleBO scheduleBO = new ScheduleBO();
+                    DeviceUseBO deviceUseBO = new DeviceUseBO();
+                    EmailBO emailBO = new EmailBO();
+                    RequestBO requestBO = new RequestBO();
+                    InfantAccountModel infantAccount = deviceBO.GetInfantAccountLinked(windowsAccountModel.InfantAccountId);
+                    DateTime dateValue = DateTime.Now;
+                    string dia = dateValue.ToString("dddd", new CultureInfo("es-ES"));
+
+                    // Se obtiene el uso del dispositivo para la cuenta de infante
+                    List<DeviceUseModel> deviceUseModelList = deviceUseBO.GetDeviceUse(windowsAccountModel.InfantAccountId, dia);
+
+                    // Una vez obtenido el uso del dispositivo procedo a bloquear el dispositivo en el horario y día establecido.
+                    if (deviceUseModelList.Count > 0)
+                    {
+                        foreach (var deviceUse in deviceUseModelList)
+                        {
+                            if (scheduleBO.CompareScheduleWithSystemTime(deviceUse.ScheduleId))
+                            {
+                                Process.Start(@"C:\WINDOWS\system32\rundll32.exe", "user32.dll,LockWorkStation");
+                            }                            
+                        }
+                    }
+                }
 
             }
             catch (Exception ex)

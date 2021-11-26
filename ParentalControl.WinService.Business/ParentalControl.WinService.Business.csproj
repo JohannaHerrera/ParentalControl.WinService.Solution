@@ -56,8 +56,10 @@
     <Compile Include="Enums\Constants.cs" />
     <Compile Include="ParentalControl\ApplicationBO.cs" />
     <Compile Include="ParentalControl\DeviceBO.cs" />
+    <Compile Include="ParentalControl\DeviceUseBO.cs" />
     <Compile Include="ParentalControl\EmailBO.cs" />
     <Compile Include="ParentalControl\RequestBO.cs" />
+    <Compile Include="ParentalControl\ScheduleBO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
