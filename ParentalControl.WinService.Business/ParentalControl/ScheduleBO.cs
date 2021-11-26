@@ -24,8 +24,8 @@ namespace ParentalControl.WinService.Business.ParentalControl
         public bool CompareScheduleWithSystemTime(int scheduleId)
         {
             ScheduleModel scheduleModel = GetSchedule(scheduleId);
-            string horaInicio = scheduleModel.ScheduleStartTime.ToString();
-            string horaFin = scheduleModel.ScheduleEndTime.ToString();
+            string horaInicio = scheduleModel.ScheduleStartTime.ToString("HH:mm");
+            string horaFin = scheduleModel.ScheduleEndTime.ToString("HH:mm");
 
             string horaActual = DateTime.Now.ToString("HH:mm");
             
