@@ -12,7 +12,7 @@ using DeviceId;
 
 namespace ParentalControl.WinService.Business.ParentalControl
 {
-    class WebConfigurationBO
+    public class WebConfigurationBO
     {
         public IList<TModel> ObtenerListaSQL<TModel>(string query)
         {
@@ -29,7 +29,7 @@ namespace ParentalControl.WinService.Business.ParentalControl
             }
         }
 
-        public WebConfigurationModel GetWebConfiguration(string windowsAccountName)
+        public List<WebConfigurationModel> GetWebConfiguration(string windowsAccountName)
         {
             string deviceCode = this.GetDeviceIdentifier();
             string query = $"SELECT WebConfigurationId, WebConfigurationAccess, CategoryId, WebConfiguration.InfantAccountId " +
@@ -37,24 +37,13 @@ namespace ParentalControl.WinService.Business.ParentalControl
                            $" ON WebConfiguration.InfantAccountId = WindowsAccount.InfantAccountId" +
                            $" WHERE WindowsAccount.WindowsAccountName = '{windowsAccountName}'";
             List<WebConfigurationModel> webConfigurationModelList = this.ObtenerListaSQL<WebConfigurationModel>(query).ToList();
-            WebConfigurationModel webConfigurationModel = null;
 
-            if (webConfigurationModelList.Count > 0)
-            {
-                //windowsAccountModel = deviceModelList.FirstOrDefault(); Por que se saca el primero
-                webConfigurationModel = webConfigurationModelList.FirstOrDefault();
-            }
-
-            return webConfigurationModel;
-
+            return webConfigurationModelList;
         }
         public string GetDeviceIdentifier()
         {
             string deviceId = new DeviceIdBuilder().AddMachineName().ToString();
-
             return deviceId;
         }
-
-
     }
 }

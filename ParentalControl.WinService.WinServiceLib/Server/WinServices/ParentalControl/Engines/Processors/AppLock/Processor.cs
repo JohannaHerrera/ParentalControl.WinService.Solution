@@ -83,8 +83,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                             MessageBox.Show("Ocurrión un error al solicitar el acceso. Inténtelo de nuevo.");
                                         }
                                     }
-                                    
-                                    
+                                              
                                 }
                             }
                         }                        
