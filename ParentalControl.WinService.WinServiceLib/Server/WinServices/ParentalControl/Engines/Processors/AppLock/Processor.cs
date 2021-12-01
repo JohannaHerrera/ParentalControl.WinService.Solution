@@ -1,4 +1,5 @@
-﻿using ParentalControl.WinService.Business.ParentalControl;
+﻿using ParentalControl.WinService.Business.Enums;
+using ParentalControl.WinService.Business.ParentalControl;
 using ParentalControl.WinService.Models.Device;
 using ParentalControl.WinService.Models.InfantAccount;
 using ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalControl.Engines.Configuration;
@@ -39,6 +40,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                     ApplicationBO applicationBO = new ApplicationBO();
                     EmailBO emailBO = new EmailBO();
                     RequestBO requestBO = new RequestBO();
+                    Constants constants = new Constants();
                     InfantAccountModel infantAccount = deviceBO.GetInfantAccountLinked(windowsAccountModel.InfantAccountId);
 
                     // Obtengo las aplicaciones bloqueadas
@@ -51,27 +53,36 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                         {
                             foreach (Process process in Process.GetProcesses())
                             {
-                                if (app.AppName.ToUpper().Contains(process.ProcessName.ToUpper()))
+                                if (app.AppName.ToUpper().Contains(process.ProcessName.ToUpper()) ||
+                                    process.ProcessName.ToUpper().Contains(app.AppName.ToUpper()))
                                 {
                                     process.Kill();
                                     DialogResult res = MessageBox.Show("Esta aplicación está bloqueada. ¿Deseas solicitar el acceso?", "¡AVISO!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                                     
                                     if (res == DialogResult.Yes)
                                     {
-                                        string body = $"<p>¡Hola! <br> <br> Queremos informarte que <b>{infantAccount.InfantName}</b> " +
+                                        // Valido si no existe una petición de acceso sobre la aplicación
+                                        if (!requestBO.VerifyRequest(constants.AppConfiguration, app.AppName))
+                                        {
+                                            string body = $"<p>¡Hola! <br> <br> Queremos informarte que <b>{infantAccount.InfantName}</b> " +
                                                $"está solicitando que le habilites la aplicación <b>{app.AppName}</b>. <br>" +
                                                $"Para aprobar o desaprobar esta petición ingresa a nuestro " +
                                                $"sistema y dirígete a la sección de <b>Notificaciones</b>.<p>";
 
-                                        string parentEmail = deviceBO.GetParentEmail(infantAccount.ParentId);
-                                        
-                                        if (emailBO.SendEmail(parentEmail, body))
-                                        {
-                                            if(requestBO.RegisterRequestApp(infantAccount.InfantAccountId, 
-                                                                     infantAccount.ParentId, app.AppName))
+                                            string parentEmail = deviceBO.GetParentEmail(infantAccount.ParentId);
+
+                                            if (emailBO.SendEmail(parentEmail, body))
                                             {
-                                                MessageBox.Show("Tu petición ha sido enviada correctamente. Te " +
-                                                                "estaremos notificando la respuesta de tus padres.");
+                                                if (requestBO.RegisterRequestApp(infantAccount.InfantAccountId,
+                                                                         infantAccount.ParentId, app.AppName))
+                                                {
+                                                    MessageBox.Show("Tu petición ha sido enviada correctamente. Te " +
+                                                                    "estaremos notificando la respuesta de tus padres.");
+                                                }
+                                                else
+                                                {
+                                                    MessageBox.Show("Ocurrión un error al solicitar el acceso. Inténtelo de nuevo.");
+                                                }
                                             }
                                             else
                                             {
@@ -80,11 +91,10 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                         }
                                         else
                                         {
-                                            MessageBox.Show("Ocurrión un error al solicitar el acceso. Inténtelo de nuevo.");
+                                            MessageBox.Show("Error, ya enviaste una petición de acceso sobre este recurso.");
+                                            return;
                                         }
-                                    }
-                                    
-                                    
+                                    }                                                                      
                                 }
                             }
                         }                        
@@ -107,6 +117,50 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                             }
                         }
                     }                  
+                }
+
+                // Verifico si hay nuevas cuentas Windows por registrar
+                List<string> windowsAccounts = deviceBO.GetWindowsAccounts();
+
+                if (windowsAccounts.Count > 0)
+                {
+                    foreach (var account in windowsAccounts)
+                    {
+                        List<WindowsAccountModel> verifyAccount = deviceBO.VerifyWindowsAccount(account);
+
+                        if (verifyAccount.Count == 0)
+                        {
+                            deviceBO.RegisterWindowsAccount(account);
+                        }
+                    }
+                    
+                }
+
+                // Si alguna cuenta Windows se eliminó también elimino de la BD
+                List<WindowsAccountModel> windowsAccountModelList = deviceBO.GetWindowsAccountsFromDB();
+                
+                if (windowsAccountModelList.Count > 0)
+                {
+                    foreach (var account in windowsAccountModelList)
+                    {
+                        if (!windowsAccounts.Any(x => x.ToUpper().Equals(account.WindowsAccountName.ToUpper())))
+                        {
+                            deviceBO.DeleteWindowsAccount(account.WindowsAccountName);
+
+                            if (account.InfantAccountId != 0)
+                            {
+                                // Verifico si existe una cuenta Windows vinculada a la cuenta Infantil
+                                List<WindowsAccountModel> windowsAccountsList = deviceBO.VerifyWindowsAccountFromInfants(account.InfantAccountId);
+
+                                if (windowsAccounts.Count == 0)
+                                {
+                                    // Elimino las aplicaciones a la cuenta anterior
+                                    ApplicationBO applicationBO = new ApplicationBO();
+                                    applicationBO.DeleteApps(account.InfantAccountId);
+                                }
+                            }                           
+                        }
+                    }
                 }
             }
             catch (Exception ex)

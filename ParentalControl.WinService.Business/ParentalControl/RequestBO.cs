@@ -1,5 +1,6 @@
 ﻿using ParentalControl.WinService.Business.Enums;
 using ParentalControl.WinService.Data;
+using ParentalControl.WinService.Models.Request;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -27,6 +28,44 @@ namespace ParentalControl.WinService.Business.ParentalControl
             execute = SQLConexionDataBase.Execute(query);
             
             return execute;
+        }
+
+        /// <summary>
+        /// Método para verificar si ya existe una solicitud igual
+        /// </summary>
+        /// <returns>bool: TRUE(existe), FALSE(no existe)</returns>
+        public bool VerifyRequest(int requestType, string requestObject)
+        {
+            Constants constants = new Constants();
+            bool exist = true;
+            var dateNow = DateTime.Now.ToString("yyyy-MM-dd");
+            string query = string.Empty;
+            List<RequestModel> requestModelList = new List<RequestModel>();
+
+            if (requestType == constants.WebConfiguration || requestType == constants.AppConfiguration)
+            {
+                query = $"SELECT * FROM Request WHERE RequestState = 0" +
+                        $" AND RequestObject = '{requestObject}'";
+            }
+            else if (requestType == constants.DeviceConfiguration)
+            {
+                query = $"SELECT * FROM Request WHERE RequestState = 0" +
+                        $" AND CAST(RequestCreationDate AS date) = '{dateNow}'" +
+                        $" AND RequestTime IS NOT NULL";
+            }
+
+            requestModelList = this.ObtenerListaSQL<RequestModel>(query).ToList();
+
+            if (requestModelList.Count > 0)
+            {
+                exist = true;
+            }
+            else
+            {
+                exist = false;
+            }
+
+            return exist;
         }
 
         /// <summary>
