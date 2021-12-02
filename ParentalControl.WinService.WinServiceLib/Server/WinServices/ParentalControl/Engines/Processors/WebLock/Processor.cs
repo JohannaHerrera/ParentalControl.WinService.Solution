@@ -32,11 +32,6 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                     break;
             }
         }
-        /*public void setLines(List<string> list)
-        {
-            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-            File.AppendAllLines(path, list);
-        }*/
         public bool GetExistence(string file)
         {
             string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
@@ -66,8 +61,6 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
             return exist;
         }
 
-
-
         #endregion
 
 
@@ -77,78 +70,13 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
         {
             try
             {
-               /*
-               int num = 0;
-               if (num == 1)
-                {
-                    
-                    string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                    List<string> list = new List<string>();
-
-                    list.Add("127.0.0.1" + " " + "www.duolingo.com");
-                    list.Add("127.0.0.1" + " " + "www.facebook.com");
-
-                    File.AppendAllLines(path, list);
-                }
-                else
-                {
-                    string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                    string[] lines = File.ReadAllLines(path);
-                    //var varLines = File.ReadLines(@"C:\WINDOWS\system32\drivers\etc\hosts").Count();
-                    int counter = 0;
-                    foreach (string line in lines)
-                    {
-                        
-                        if (line.ToString() == "127.0.0.1 www.duolingo.com" || line.ToString() == "127.0.0.1 www.facebook.com")
-                        {     
-                            lines[counter] = null;
-                            File.WriteAllLines(path, lines);
-                            File.WriteAllLines(path, lines.Take(lines.Length - 1 ).ToArray());                    
-                        }
-                        counter++;
-
-                    }                        
-                }
-                */
-
-                /*
-                 int num = 1;
-                 if (num==1)
-                 {
-                    using (StreamWriter w = File.AppendText(Path.Combine(Environment.GetFolderPath
-                        (Environment.SpecialFolder.System), @"drivers\etc\hosts"))) 
-                    {
-                        List<string> list = new List<string>();
-
-                        list.Add("127.0.0.1" + " " + "www.duolingo.com");
-
-
-                        w.WriteLine("127.0.0.1" + " " + "www.duolingo.com");
-                    }
-
-                 }
-
-                */
-
-
-                // Verifico si el usuario Windows Actual tiene vinculada una cuenta infantil
-
-                
+                // Verifico si el usuario Windows Actual tiene vinculada una cuenta infantil         
                 WebConfigurationBO webConfigurationBO = new WebConfigurationBO();
                 DeviceBO deviceBO = new DeviceBO();
                 WindowsAccountModel windowsAccountModel = deviceBO.GetInfantAccount(Environment.UserName);
                 if (windowsAccountModel != null)
                 {
                     // Verifico cambios en la base de datos
-                    /*
-                    string connectionString =
-                        @"Data Source = .\Keru; Initial Catalog = ParentalControlDB; Integrated Security = true;";
-                    using (TableDependency.SqlClient.SqlTableDependency<Models.Device.WebConfigurationModel> dep =
-                        new TableDependency.SqlClient.SqlTableDependency<Models.Device.WebConfigurationModel>(connectionString))
-                    {
-                        dep.OnChanged += Dep_OnChanged;
-                        dep.Start();
-                    }*/
                     //Confirmo si hay cambios en la base de datos 
                     webChanges = true;
                     if (this.webChanges)
@@ -170,14 +98,14 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                 {
                                     try
                                     {
-                                        string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                                        List<string> list = new List<string>();
                                         string drugs = @"C:\Users\Keru\Downloads\drugs.txt";
                                         string[] drugsFile = File.ReadAllLines(drugs);
                                         //Valido que la info no este en el hosts, si est[a entonces ya no la añado
                                         bool existencia = GetExistence(drugs);
                                         if (existencia == false)// Si no existe 
                                         {
+                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
+                                            List<string> list = new List<string>();
                                             int contador = 0;
                                             foreach (string lineDrugs in drugsFile)
                                             {
@@ -198,13 +126,13 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                 {
                                     try
                                     {
-                                        string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                                        List<string> list = new List<string>();
                                         string adult = @"C:\Users\Keru\Downloads\adult.txt";
                                         string[] adultFile = File.ReadAllLines(adult);
                                         bool existencia = GetExistence(adult);
                                         if (existencia == false)// Si no existe 
                                         {
+                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
+                                            List<string> list = new List<string>();
                                             foreach (string lineAdult in adultFile)
                                             {
                                                 list.Add("127.0.0.1" + " " + lineAdult.ToString());
@@ -225,13 +153,13 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                 {
                                     try
                                     {
-                                        string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                                        List<string> list = new List<string>();
                                         string games = @"C:\Users\Keru\Downloads\games.txt";
                                         string[] gamesFile = File.ReadAllLines(games);
                                         bool existencia = GetExistence(games);
                                         if (existencia == false)// Si no existe 
                                         {
+                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
+                                            List<string> list = new List<string>();
                                             foreach (string gameLine in gamesFile)
                                             {
                                                 list.Add("127.0.0.1" + " " + gameLine.ToString());
@@ -249,15 +177,13 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                 {
                                     try
                                     {
-
-
-                                        string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                                        List<string> list = new List<string>();
                                         string social = @"C:\Users\Keru\Downloads\socialN.txt";
                                         string[] socialFile = File.ReadAllLines(social);
                                         bool existencia = GetExistence(social);
                                         if (existencia == false)// Si no existe 
                                         {
+                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
+                                            List<string> list = new List<string>();
                                             foreach (string socialLine in socialFile)
                                             {
                                                 list.Add("127.0.0.1" + " " + socialLine.ToString());
@@ -272,21 +198,92 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                 }
 
                                 //******************************* DESBLOQUEO **********************************************
-                                // Games
                                 
+                                //Drugs
+                                if (web.WebConfigurationAccess == false && web.CategoryId == 1)
+                                {
+                                    try
+                                    {
+                                        string drugs = @"C:\Users\Keru\Downloads\drugs.txt";
+                                        string[] drugsFile = File.ReadAllLines(drugs);
+                                        bool existencia = GetExistence(drugs);
+                                        if (existencia == true)
+                                        {
+                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
+                                            string[] hosts = File.ReadAllLines(path);
+                                            List<string> list = new List<string>();
+                                            int counter = 0;
+                                            foreach (string hostsLine in hosts)
+                                            {
+                                                int count = 0;
+                                                foreach (string drugsLine in drugsFile)
+                                                {
+                                                    if (hostsLine.ToString() == ("127.0.0.1 " + drugsLine.ToString()))
+                                                    {
+                                                        hosts[counter] = null;
+                                                        File.WriteAllLines(path, hosts);
+                                                        //File.WriteAllLines(path, hosts.Take(hosts.Length - 1).ToArray());
+                                                    }
+                                                    count++;
+                                                }
+                                                counter++;
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show("No se pudo desbloquear la web Drogas " + ex.Message);
+                                    }
+                                }
+                                //Adult
+                                if (web.WebConfigurationAccess == false && web.CategoryId == 2)
+                                {
+                                    try
+                                    {
+                                        string adult = @"C:\Users\Keru\Downloads\adult.txt";
+                                        string[] adultFile = File.ReadAllLines(adult);
+                                        bool existencia = GetExistence(adult);
+                                        if (existencia == true)
+                                        {
+                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
+                                            string[] hosts = File.ReadAllLines(path);
+                                            List<string> list = new List<string>();
+                                            int counter = 0;
+                                            foreach (string hostsLine in hosts)
+                                            {
+                                                int count = 0;
+                                                foreach (string adultLine in adultFile)
+                                                {
+                                                    if (hostsLine.ToString() == ("127.0.0.1 " + adultLine.ToString()))
+                                                    {
+                                                        hosts[counter] = null;
+                                                        File.WriteAllLines(path, hosts);
+                                                        //File.WriteAllLines(path, hosts.Take(hosts.Length - 1).ToArray());
+                                                    }
+                                                    count++;
+                                                }
+                                                counter++;
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show("No se pudo desbloquear la web Contenido Adulto" + ex.Message);
+                                    }
+                                }
+                                // Games
                                 if (web.WebConfigurationAccess == false && web.CategoryId == 3)
                                 {
                                     try
                                     {
-                                        string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                                        string[] hosts = File.ReadAllLines(path);
-                                        //var varLines = File.ReadLines(@"C:\WINDOWS\system32\drivers\etc\hosts").Count();
-                                        List<string> list = new List<string>();
                                         string games = @"C:\Users\Keru\Downloads\games.txt";
                                         string[] gamesFile = File.ReadAllLines(games);
                                         bool existencia = GetExistence(games);
                                         if (existencia==true)
                                         {
+                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
+                                            string[] hosts = File.ReadAllLines(path);
+                                            List<string> list = new List<string>();
                                             int counter = 0;
                                             foreach (string hostsLine in hosts)
                                             {
@@ -306,22 +303,21 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                         }
                                     }catch(Exception ex)
                                     {
-                                        MessageBox.Show("No se pudo desbloquear la web Redes sociales " + ex.Message);
+                                        MessageBox.Show("No se pudo desbloquear la web Juegos " + ex.Message);
                                     }    
                                 }
                                 // SocialNetwork
                                 if (web.WebConfigurationAccess == false && web.CategoryId == 4)
                                 {
                                     try{
-                                        string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                                        string[] hosts = File.ReadAllLines(path);
-                                        //var varLines = File.ReadLines(@"C:\WINDOWS\system32\drivers\etc\hosts").Count();
-                                        List<string> list = new List<string>();
                                         string social = @"C:\Users\Keru\Downloads\socialN.txt";
                                         string[] socialFile = File.ReadAllLines(social);
                                         bool existencia = GetExistence(social);
                                         if (existencia==true)
                                         {
+                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
+                                            string[] hosts = File.ReadAllLines(path);
+                                            List<string> list = new List<string>();
                                             int counter = 0;
                                             foreach (string hostsLine in hosts)
                                             {
@@ -331,8 +327,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                                     if (hostsLine.ToString() == ("127.0.0.1 " + socialLine.ToString()))
                                                     {
                                                         hosts[counter] = null;
-                                                        File.WriteAllLines(path, hosts);
-                                                        //File.WriteAllLines(path, hosts.Take(hosts.Length - 1).ToArray());
+                                                        File.WriteAllLines(path, hosts);                                                       
                                                     }
                                                     count++;
                                                 }
