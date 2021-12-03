@@ -44,7 +44,7 @@ namespace ParentalControl.WinService.Business.ParentalControl
             DateTime.ParseExact(horaFin, "HH:mm", null);
 
 
-            if (horaActual.CompareTo(horaInicio) <= 0 && horaActual.CompareTo(horaFin) >= 0)
+            if (horaActual.CompareTo(horaInicio) >= 0 && horaActual.CompareTo(horaFin) <= 0)
             {
                 return true;
             }
