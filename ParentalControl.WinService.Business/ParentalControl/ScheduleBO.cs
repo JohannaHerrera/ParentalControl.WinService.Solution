@@ -11,6 +11,11 @@ namespace ParentalControl.WinService.Business.ParentalControl
 {
     public class ScheduleBO
     {
+        /// <summary>
+        /// Método para obtener los horarios
+        /// </summary>
+        /// <param name="scheduleId"></param>
+        /// <returns></returns>
         public ScheduleModel GetSchedule(int scheduleId)
         {
             string query = $"SELECT * FROM Schedule WHERE ScheduleId = {scheduleId}";
@@ -20,7 +25,11 @@ namespace ParentalControl.WinService.Business.ParentalControl
             return scheduleModel;
         }
 
-        //hola
+        /// <summary>
+        /// Método para verificar si la hora actual está entre los horarios de bloqueo del dispositivo
+        /// </summary>
+        /// <param name="scheduleId"></param>
+        /// <returns></returns>
         public bool CompareScheduleWithSystemTime(int scheduleId)
         {
             ScheduleModel scheduleModel = GetSchedule(scheduleId);
@@ -41,6 +50,30 @@ namespace ParentalControl.WinService.Business.ParentalControl
             }
             return false;
         }
+
+        /// <summary>
+        /// Método para verificar si la hora actual está entre los horarios de bloqueo del dispositivo
+        /// </summary>
+        /// <param name="scheduleId"></param>
+        /// <returns></returns>
+        public bool ShowMessageScheduleWithSystemTime(int scheduleId)
+        {
+            ScheduleModel scheduleModel = GetSchedule(scheduleId);
+            string horaInicio = scheduleModel.ScheduleStartTime.ToString("HH:mm");
+            string horaActual = DateTime.Now.ToString("HH:mm");
+            DateTime dt1;
+            dt1 = DateTime.ParseExact(horaInicio, "HH:mm", null) - new TimeSpan(0, 10, 0);
+
+            DateTime.ParseExact(horaActual, "HH:mm", null);
+            DateTime.ParseExact(horaInicio, "HH:mm", null);
+
+            if (horaActual.CompareTo(dt1) >= 0  && horaActual.CompareTo(horaInicio) <= 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
         private IList<TModel> ObtenerListaSQL<TModel>(string query)
         {
             try

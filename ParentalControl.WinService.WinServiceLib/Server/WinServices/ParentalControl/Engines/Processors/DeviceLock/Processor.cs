@@ -54,7 +54,13 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                     {
                         foreach (var deviceUse in deviceUseModelList)
                         {
-                            if (scheduleBO.CompareScheduleWithSystemTime(deviceUse.ScheduleId))
+
+                            if (scheduleBO.ShowMessageScheduleWithSystemTime(deviceUse.ScheduleId))
+                            {
+                                DialogResult res = MessageBox.Show("Por Favor Guarde su trabajo, el dispositivo se bloqueará en aproximadamente 10 minutos", "¡AVISO!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            }
+
+                            else if (scheduleBO.CompareScheduleWithSystemTime(deviceUse.ScheduleId))
                             {
                                 Process.Start(@"C:\WINDOWS\system32\rundll32.exe", "user32.dll,LockWorkStation");
                             }                            
