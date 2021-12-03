@@ -41,6 +41,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                     EmailBO emailBO = new EmailBO();
                     RequestBO requestBO = new RequestBO();
                     Constants constants = new Constants();
+                    ActivityBO activityBO = new ActivityBO();
                     InfantAccountModel infantAccount = deviceBO.GetInfantAccountLinked(windowsAccountModel.InfantAccountId);
 
                     // Obtengo las aplicaciones bloqueadas
@@ -57,6 +58,9 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                     process.ProcessName.ToUpper().Contains(app.AppName.ToUpper()))
                                 {
                                     process.Kill();
+
+                                    activityBO.RegisterApps(infantAccount.InfantAccountId, app.AppName);
+
                                     DialogResult res = MessageBox.Show("Esta aplicación está bloqueada. ¿Deseas solicitar el acceso?", "¡AVISO!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                                     
                                     if (res == DialogResult.Yes)
@@ -154,7 +158,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
 
                                 if (windowsAccounts.Count == 0)
                                 {
-                                    // Elimino las aplicaciones a la cuenta anterior
+                                    // Elimino las aplicaciones de la cuenta infantil
                                     ApplicationBO applicationBO = new ApplicationBO();
                                     applicationBO.DeleteApps(account.InfantAccountId);
                                 }

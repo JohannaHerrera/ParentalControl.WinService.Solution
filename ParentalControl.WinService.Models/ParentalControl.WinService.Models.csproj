@@ -55,6 +55,7 @@
     <Compile Include="Device\WebCategoryModel.cs" />
     <Compile Include="Device\WebConfigurationModel.cs" />
     <Compile Include="Device\WindowsAccountModel.cs" />
+    <Compile Include="InfantAccount\ActivityModel.cs" />
     <Compile Include="InfantAccount\InfantAccountModel.cs" />
     <Compile Include="InfantAccount\ParentModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
