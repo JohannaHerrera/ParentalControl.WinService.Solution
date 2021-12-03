@@ -12,6 +12,8 @@ using ParentalControl.WinService.Models.Device;
 using ParentalControl.WinService.Models.InfantAccount;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using ParentalControl.WinService.Business.Enums;
+using System.Diagnostics;
 
 namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalControl.Engines.Processors.WebLock
 {
@@ -31,6 +33,78 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                     this.webChanges = true;
                     break;
             }
+        }
+        public void KillNavigateProcess()
+        {
+            try
+            {
+                foreach (Process process in Process.GetProcesses())
+                {
+                    if (process.ProcessName.ToUpper().Contains("CHROME") ||
+                        process.ProcessName.ToUpper().Contains("EDGE") ||
+                        process.ProcessName.ToUpper().Contains("EXPLORER") ||
+                        process.ProcessName.ToUpper().Contains("FIREFOX") ||
+                        process.ProcessName.ToUpper().Contains("OPERA") ||
+                        process.ProcessName.ToUpper().Contains("VIVALDI") ||
+                        process.ProcessName.ToUpper().Contains("BRAVE")||
+                        process.ProcessName.ToUpper().Contains("WHATSAPP"))
+                    {
+                        process.Kill();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Error al cerrar el navegador, Reinicielo!" + ex);
+            }
+        }
+        public void DeleteHost(string file)
+        {
+            try { 
+                string[] files = File.ReadAllLines(file);
+                string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
+                string[] hosts = File.ReadAllLines(path);
+                List<string> list = new List<string>();
+                int counter = 0;
+                foreach (string hostsLine in hosts)
+                {
+                    int count = 0;
+                    foreach (string lineFile in files)
+                    {
+                        if (hostsLine.ToString() == ("127.0.0.1 " + lineFile.ToString()))
+                        {
+                            hosts[counter] = null;
+                            File.WriteAllLines(path, hosts);
+                            //File.WriteAllLines(path, hosts.Take(hosts.Length - 1).ToArray());
+                        }
+                        count++;
+                    }
+                    counter++;
+                }
+            }catch(Exception ex)
+            {
+                MessageBox.Show("Error al desbloquear webs" + ex);
+            }
+}
+        public void AddHost(string file)
+        {
+            try
+            {
+                string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
+                string[] files = File.ReadAllLines(file);
+                List<string> list = new List<string>();
+                int contador = 0;
+                foreach (string lineFile in files)
+                {
+                    list.Add("127.0.0.1" + " " + lineFile.ToString());
+                    contador++;
+                }
+                File.AppendAllLines(path, list);
+            }catch(Exception ex)
+            {
+                MessageBox.Show("Error al bloquear webs" + ex);
+            }
+
         }
         public bool GetExistence(string file)
         {
@@ -84,7 +158,6 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                         EmailBO emailBO = new EmailBO();
                         RequestBO requestBO = new RequestBO();
                         InfantAccountModel infantAccount = deviceBO.GetInfantAccountLinked(windowsAccountModel.InfantAccountId);
-
                         // Obtengo las webs        
                         List<WebConfigurationModel> webConfigurationModelList = webConfigurationBO.GetWebConfiguration(Environment.UserName);
                         if (webConfigurationModelList.Count > 0)
@@ -92,80 +165,57 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                             foreach (var web in webConfigurationModelList)
                             {
                                 //******************** BLOQUEAR ****************************
-                                // NUNCA SE VAN A DESBLOQUEAR
                                 // Drugs                   
                                 if (web.WebConfigurationAccess == true && web.CategoryId == 1)
                                 {
                                     try
                                     {
-                                        string drugs = @"C:\Users\Keru\Downloads\drugs.txt";
-                                        string[] drugsFile = File.ReadAllLines(drugs);
-                                        //Valido que la info no este en el hosts, si est[a entonces ya no la añado
-                                        bool existencia = GetExistence(drugs);
+                                        string drugs = @"drugs.txt";
+                                        //string drugs = @"C:\Users\Keru\Downloads\drugs.txt";
+                                        bool existencia = GetExistence(drugs.ToString());
+                                        //Valida la existencia de la informacion en el Host
+                                        //Si la informacion no existe, enotnces se procese
+                                        //A llenarla
                                         if (existencia == false)// Si no existe 
                                         {
-                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                                            List<string> list = new List<string>();
-                                            int contador = 0;
-                                            foreach (string lineDrugs in drugsFile)
-                                            {
-                                                list.Add("127.0.0.1" + " " + lineDrugs.ToString());
-                                                contador++;
-                                            }
-                                            File.AppendAllLines(path, list);
-                                            //setLines(list);
+                                            AddHost(drugs);
+                                            KillNavigateProcess();
                                         }
                                     }catch(Exception ex)
                                     {
 
                                     }    
-                                }
+                                }                    
                                 //Adult
-                                //************* ANADIR VALIDADOR PARA SABER SI ESTE ARCHIVO YA ESTA EN HOST PARA NO VOLVER A ESCRIBIR
                                 if (web.WebConfigurationAccess == true && web.CategoryId == 2)
                                 {
                                     try
                                     {
-                                        string adult = @"C:\Users\Keru\Downloads\adult.txt";
-                                        string[] adultFile = File.ReadAllLines(adult);
+                                        string adult = @"adult.txt";
+                                        //string[] adultFile = File.ReadAllLines(adult);
                                         bool existencia = GetExistence(adult);
                                         if (existencia == false)// Si no existe 
                                         {
-                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                                            List<string> list = new List<string>();
-                                            foreach (string lineAdult in adultFile)
-                                            {
-                                                list.Add("127.0.0.1" + " " + lineAdult.ToString());
-                                            }
-                                            File.AppendAllLines(path, list);
-                                            //setLines(list);
+                                            AddHost(adult);
+                                            KillNavigateProcess();
                                         }
                                     }
                                     catch (Exception ex)
                                     {
 
                                     }
-
-                                }
-                                
+                                }    
                                 //Games
                                 if (web.WebConfigurationAccess == true && web.CategoryId == 3)
                                 {
                                     try
                                     {
-                                        string games = @"C:\Users\Keru\Downloads\games.txt";
-                                        string[] gamesFile = File.ReadAllLines(games);
+                                        string games = @"games.txt";
                                         bool existencia = GetExistence(games);
                                         if (existencia == false)// Si no existe 
                                         {
-                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                                            List<string> list = new List<string>();
-                                            foreach (string gameLine in gamesFile)
-                                            {
-                                                list.Add("127.0.0.1" + " " + gameLine.ToString());
-                                            }
-                                            File.AppendAllLines(path, list);
-                                            //setLines(list);
+                                            AddHost(games);
+                                            KillNavigateProcess();
                                         }
                                     }catch(Exception ex)
                                     {
@@ -177,57 +227,28 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                 {
                                     try
                                     {
-                                        string social = @"C:\Users\Keru\Downloads\socialN.txt";
-                                        string[] socialFile = File.ReadAllLines(social);
+                                        string social = @"socialN.txt";
                                         bool existencia = GetExistence(social);
                                         if (existencia == false)// Si no existe 
                                         {
-                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                                            List<string> list = new List<string>();
-                                            foreach (string socialLine in socialFile)
-                                            {
-                                                list.Add("127.0.0.1" + " " + socialLine.ToString());
-                                            }
-                                            File.AppendAllLines(path, list);
-                                            //setLines(list);
+                                            AddHost(social);
+                                            KillNavigateProcess();
                                         }
                                     }catch(Exception ex)
                                     {
-
                                     }
                                 }
-
                                 //******************************* DESBLOQUEO **********************************************
-                                
                                 //Drugs
                                 if (web.WebConfigurationAccess == false && web.CategoryId == 1)
                                 {
                                     try
                                     {
-                                        string drugs = @"C:\Users\Keru\Downloads\drugs.txt";
-                                        string[] drugsFile = File.ReadAllLines(drugs);
+                                        string drugs = @"drugs.txt";
                                         bool existencia = GetExistence(drugs);
                                         if (existencia == true)
                                         {
-                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                                            string[] hosts = File.ReadAllLines(path);
-                                            List<string> list = new List<string>();
-                                            int counter = 0;
-                                            foreach (string hostsLine in hosts)
-                                            {
-                                                int count = 0;
-                                                foreach (string drugsLine in drugsFile)
-                                                {
-                                                    if (hostsLine.ToString() == ("127.0.0.1 " + drugsLine.ToString()))
-                                                    {
-                                                        hosts[counter] = null;
-                                                        File.WriteAllLines(path, hosts);
-                                                        //File.WriteAllLines(path, hosts.Take(hosts.Length - 1).ToArray());
-                                                    }
-                                                    count++;
-                                                }
-                                                counter++;
-                                            }
+                                            DeleteHost(drugs);
                                         }
                                     }
                                     catch (Exception ex)
@@ -240,30 +261,11 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                 {
                                     try
                                     {
-                                        string adult = @"C:\Users\Keru\Downloads\adult.txt";
-                                        string[] adultFile = File.ReadAllLines(adult);
+                                        string adult = @"adult.txt";
                                         bool existencia = GetExistence(adult);
                                         if (existencia == true)
                                         {
-                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                                            string[] hosts = File.ReadAllLines(path);
-                                            List<string> list = new List<string>();
-                                            int counter = 0;
-                                            foreach (string hostsLine in hosts)
-                                            {
-                                                int count = 0;
-                                                foreach (string adultLine in adultFile)
-                                                {
-                                                    if (hostsLine.ToString() == ("127.0.0.1 " + adultLine.ToString()))
-                                                    {
-                                                        hosts[counter] = null;
-                                                        File.WriteAllLines(path, hosts);
-                                                        //File.WriteAllLines(path, hosts.Take(hosts.Length - 1).ToArray());
-                                                    }
-                                                    count++;
-                                                }
-                                                counter++;
-                                            }
+                                            DeleteHost(adult);
                                         }
                                     }
                                     catch (Exception ex)
@@ -276,30 +278,11 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                 {
                                     try
                                     {
-                                        string games = @"C:\Users\Keru\Downloads\games.txt";
-                                        string[] gamesFile = File.ReadAllLines(games);
+                                        string games = @"games.txt";
                                         bool existencia = GetExistence(games);
                                         if (existencia==true)
                                         {
-                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                                            string[] hosts = File.ReadAllLines(path);
-                                            List<string> list = new List<string>();
-                                            int counter = 0;
-                                            foreach (string hostsLine in hosts)
-                                            {
-                                                int count = 0;
-                                                foreach (string gamesLine in gamesFile)
-                                                {
-                                                    if (hostsLine.ToString() == ("127.0.0.1 " + gamesLine.ToString()))
-                                                    {
-                                                        hosts[counter] = null;
-                                                        File.WriteAllLines(path, hosts);
-                                                        //File.WriteAllLines(path, hosts.Take(hosts.Length - 1).ToArray());
-                                                    }
-                                                    count++;
-                                                }
-                                                counter++;
-                                            }
+                                            DeleteHost(games);
                                         }
                                     }catch(Exception ex)
                                     {
@@ -310,41 +293,22 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                 if (web.WebConfigurationAccess == false && web.CategoryId == 4)
                                 {
                                     try{
-                                        string social = @"C:\Users\Keru\Downloads\socialN.txt";
-                                        string[] socialFile = File.ReadAllLines(social);
+                                        string social = @"socialN.txt";
                                         bool existencia = GetExistence(social);
                                         if (existencia==true)
                                         {
-                                            string path = @"C:\WINDOWS\system32\drivers\etc\hosts";
-                                            string[] hosts = File.ReadAllLines(path);
-                                            List<string> list = new List<string>();
-                                            int counter = 0;
-                                            foreach (string hostsLine in hosts)
-                                            {
-                                                int count = 0;
-                                                foreach (string socialLine in socialFile)
-                                                {
-                                                    if (hostsLine.ToString() == ("127.0.0.1 " + socialLine.ToString()))
-                                                    {
-                                                        hosts[counter] = null;
-                                                        File.WriteAllLines(path, hosts);                                                       
-                                                    }
-                                                    count++;
-                                                }
-                                                counter++;
-                                            }
+                                            DeleteHost(social);
                                         }
                                     }
                                     catch(Exception ex)
                                     {
                                         MessageBox.Show("No se pudo desbloquear la web Redes sociales "+ ex.Message);
                                     }                                
-                                }                               
-                            }
+                                }    
+                            }  
                         }
-                        this.webChanges = false;//Variable que local, bandera de los cambios
+                        //this.webChanges = false;//Variable que local, bandera de los cambios
                     }
-                    
                 }               
             }
             catch (Exception ex)
