@@ -44,7 +44,7 @@ namespace ParentalControl.WinService.Business.ParentalControl
             DateTime.ParseExact(horaFin, "HH:mm", null);
 
 
-            if (horaActual.CompareTo(horaInicio) >= 0 && horaActual.CompareTo(horaFin) <= 0)
+            if (horaActual.CompareTo(horaInicio) <= 0 && horaActual.CompareTo(horaFin) >= 0)
             {
                 return true;
             }
@@ -59,15 +59,18 @@ namespace ParentalControl.WinService.Business.ParentalControl
         public bool ShowMessageScheduleWithSystemTime(int scheduleId)
         {
             ScheduleModel scheduleModel = GetSchedule(scheduleId);
-            string horaInicio = scheduleModel.ScheduleStartTime.ToString("HH:mm");
+            string horaFin = scheduleModel.ScheduleEndTime.ToString("HH:mm");
             string horaActual = DateTime.Now.ToString("HH:mm");
-            DateTime dt1;
-            dt1 = DateTime.ParseExact(horaInicio, "HH:mm", null) - new TimeSpan(0, 10, 0);
+
+            DateTime ObtenerHora = scheduleModel.ScheduleEndTime.AddMinutes(-10);
+
+            string HoraAUtilizar = ObtenerHora.ToString("HH:mm");
 
             DateTime.ParseExact(horaActual, "HH:mm", null);
-            DateTime.ParseExact(horaInicio, "HH:mm", null);
+            DateTime.ParseExact(horaFin, "HH:mm", null);
+            DateTime.ParseExact(HoraAUtilizar, "HH:mm", null);
 
-            if (horaActual.CompareTo(dt1) >= 0  && horaActual.CompareTo(horaInicio) <= 0)
+            if (horaActual.CompareTo(HoraAUtilizar) >= 0  && horaActual.CompareTo(horaFin) <= 0)
             {
                 return true;
             }
