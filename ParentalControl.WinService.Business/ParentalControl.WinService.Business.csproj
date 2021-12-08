@@ -77,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\Constants.cs" />
+    <Compile Include="ParentalControl\ActivityBO.cs" />
     <Compile Include="ParentalControl\ApplicationBO.cs" />
     <Compile Include="ParentalControl\DeviceBO.cs" />
     <Compile Include="ParentalControl\DeviceUseBO.cs" />
