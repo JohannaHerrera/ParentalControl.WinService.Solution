@@ -11,6 +11,7 @@ namespace ParentalControl.WinService.Business.ParentalControl
 {
     public class DeviceUseBO
     {
+        
         /// <summary>
         /// Obtiene el uso del dispositivo para un día especificada
         /// </summary>

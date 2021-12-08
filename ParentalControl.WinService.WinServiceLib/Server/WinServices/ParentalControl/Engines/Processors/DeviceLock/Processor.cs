@@ -45,17 +45,27 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                     InfantAccountModel infantAccount = deviceBO.GetInfantAccountLinked(windowsAccountModel.InfantAccountId);
                     DateTime dateValue = DateTime.Now;
                     string dia = dateValue.ToString("dddd", new CultureInfo("es-ES"));
+                    List<DeviceUseModel> deviceUseModelList = new List<DeviceUseModel>();
 
                     // Se obtiene el uso del dispositivo para la cuenta de infante
-                    List<DeviceUseModel> deviceUseModelList = deviceUseBO.GetDeviceUse(windowsAccountModel.InfantAccountId, dia);
+                    deviceUseModelList = deviceUseBO.GetDeviceUse(windowsAccountModel.InfantAccountId, dia);
 
-                    // Una vez obtenido el uso del dispositivo procedo a bloquear el dispositivo en el horario y día establecido.
+                    // Una vez obtenido el uso del dispositivo se procede a bloquear el dispositivo en
+                    // el horario y día establecido.
                     if (deviceUseModelList.Count > 0)
                     {
                         foreach (var deviceUse in deviceUseModelList)
                         {
+                            ScheduleModel scheduleModel = scheduleBO.GetSchedule(deviceUse.ScheduleId);
 
-                            if (scheduleBO.ShowMessageScheduleWithSystemTime(deviceUse.ScheduleId))
+                            //Se verifica si en el día actual el infante realizó una petición de aumento de tiempo
+                            //de uso del dispositvo, en caso de que esté aprobada, se tomará en cuenta el incremento.
+                            if (scheduleBO.DeviceUseRequestApproved(windowsAccountModel.InfantAccountId))
+                            {
+                                scheduleModel = scheduleBO.GetNewScheduleIfDeviceUseRequestIsApproved(scheduleModel, windowsAccountModel.InfantAccountId);
+                            }
+
+                            if (scheduleBO.ShowMessageScheduleWithSystemTime(scheduleModel))
                             {
                                 DialogResult res = MessageBox.Show("Por Favor Guarde su trabajo, el dispositivo se bloqueará en aproximadamente 10 minutos", "¡AVISO!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                             }

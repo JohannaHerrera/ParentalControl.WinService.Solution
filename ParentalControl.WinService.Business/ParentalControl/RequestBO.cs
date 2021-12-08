@@ -30,6 +30,8 @@ namespace ParentalControl.WinService.Business.ParentalControl
             return execute;
         }
 
+
+
         /// <summary>
         /// Método para verificar si ya existe una solicitud igual
         /// </summary>

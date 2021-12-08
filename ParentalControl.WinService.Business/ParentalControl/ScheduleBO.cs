@@ -1,4 +1,5 @@
 ﻿using ParentalControl.WinService.Data;
+using ParentalControl.WinService.Models.Request;
 using ParentalControl.WinService.Models.ScheduleAccount;
 using System;
 using System.Collections.Generic;
@@ -56,9 +57,8 @@ namespace ParentalControl.WinService.Business.ParentalControl
         /// </summary>
         /// <param name="scheduleId"></param>
         /// <returns></returns>
-        public bool ShowMessageScheduleWithSystemTime(int scheduleId)
+        public bool ShowMessageScheduleWithSystemTime(ScheduleModel scheduleModel)
         {
-            ScheduleModel scheduleModel = GetSchedule(scheduleId);
             string horaFin = scheduleModel.ScheduleEndTime.ToString("HH:mm");
             string horaActual = DateTime.Now.ToString("HH:mm");
 
@@ -75,6 +75,61 @@ namespace ParentalControl.WinService.Business.ParentalControl
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Método para comprobar si existe una solicitud de ampliar el dispositivo aprobada
+        /// </summary>
+        /// <returns></returns>
+        public bool DeviceUseRequestApproved(int infantAccountId)
+        {
+            var today = DateTime.Now.ToString("yyyy-MM-dd");
+            string query = $"SELECT * FROM Request WHERE RequestTypeId = {3}" +
+                           $" AND InfantAccountId = {infantAccountId}" +
+                           $" AND RequestState = {1}" +
+                           $" AND CAST(RequestCreationDate AS date) = '{today}'";
+            List<RequestModel> requestModelList = this.ObtenerListaSQL<RequestModel>(query).ToList();
+
+            if (requestModelList.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
+
+        /// <summary>
+        /// Método para obtener el nuevo horario, según el tiempo que pidió extender el infante
+        /// </summary>
+        /// <param name="infantId"></param>
+        /// <param name="dia"></param>
+        /// <returns></returns>
+        public ScheduleModel GetNewScheduleIfDeviceUseRequestIsApproved(ScheduleModel scheduleModel,int infantAccountId)
+        {
+            ScheduleModel newSchedule = new ScheduleModel();
+            var today = DateTime.Now.ToString("yyyy-MM-dd");
+            string query = $"SELECT * FROM Request WHERE RequestTypeId = {3}" +
+                           $" AND InfantAccountId = {infantAccountId}" +
+                           $" AND RequestState = {1}" +
+                           $" AND CAST(RequestCreationDate AS date) = '{today}'";
+            List<RequestModel> requestModelList = this.ObtenerListaSQL<RequestModel>(query).ToList();
+            
+
+            if (requestModelList.Count > 0)
+            {
+                newSchedule.ScheduleStartTime = scheduleModel.ScheduleStartTime;
+                newSchedule.ScheduleEndTime = scheduleModel.ScheduleEndTime.AddMinutes(Decimal.ToDouble(requestModelList.FirstOrDefault().RequestTime));
+
+            }
+            else
+            {
+                newSchedule = scheduleModel;
+            }
+            
+            return newSchedule;
         }
 
         private IList<TModel> ObtenerListaSQL<TModel>(string query)
