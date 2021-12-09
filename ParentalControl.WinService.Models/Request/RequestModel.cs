@@ -22,7 +22,7 @@ namespace ParentalControl.WinService.Models.Request
         // Tiempo de incremento en el tiempo
         public decimal RequestTime { get; set; }
         // Estado de la Petición
-        public bool RequestState { get; set; }
+        public int RequestState { get; set; }
         // Fecha de creación
         public DateTime RequestCreationDate { get; set; }
         // Id del padre

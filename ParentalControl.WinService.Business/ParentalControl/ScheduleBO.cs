@@ -31,9 +31,8 @@ namespace ParentalControl.WinService.Business.ParentalControl
         /// </summary>
         /// <param name="scheduleId"></param>
         /// <returns></returns>
-        public bool CompareScheduleWithSystemTime(int scheduleId)
+        public bool CompareScheduleWithSystemTime(ScheduleModel scheduleModel)
         {
-            ScheduleModel scheduleModel = GetSchedule(scheduleId);
             string horaInicio = scheduleModel.ScheduleStartTime.ToString("HH:mm");
             string horaFin = scheduleModel.ScheduleEndTime.ToString("HH:mm");
 
@@ -57,12 +56,12 @@ namespace ParentalControl.WinService.Business.ParentalControl
         /// </summary>
         /// <param name="scheduleId"></param>
         /// <returns></returns>
-        public bool ShowMessageScheduleWithSystemTime(ScheduleModel scheduleModel)
+        public bool ShowMessageScheduleWithSystemTime(ScheduleModel scheduleModel, int horaMensaje)
         {
             string horaFin = scheduleModel.ScheduleEndTime.ToString("HH:mm");
             string horaActual = DateTime.Now.ToString("HH:mm");
 
-            DateTime ObtenerHora = scheduleModel.ScheduleEndTime.AddMinutes(-10);
+            DateTime ObtenerHora = scheduleModel.ScheduleEndTime.AddMinutes(-(horaMensaje));
 
             string HoraAUtilizar = ObtenerHora.ToString("HH:mm");
 
@@ -70,7 +69,7 @@ namespace ParentalControl.WinService.Business.ParentalControl
             DateTime.ParseExact(horaFin, "HH:mm", null);
             DateTime.ParseExact(HoraAUtilizar, "HH:mm", null);
 
-            if (horaActual.CompareTo(HoraAUtilizar) >= 0  && horaActual.CompareTo(horaFin) <= 0)
+            if (horaActual.CompareTo(HoraAUtilizar) == 0)
             {
                 return true;
             }
@@ -86,7 +85,7 @@ namespace ParentalControl.WinService.Business.ParentalControl
             var today = DateTime.Now.ToString("yyyy-MM-dd");
             string query = $"SELECT * FROM Request WHERE RequestTypeId = {3}" +
                            $" AND InfantAccountId = {infantAccountId}" +
-                           $" AND RequestState = {1}" +
+                           $" AND RequestState = 1" +
                            $" AND CAST(RequestCreationDate AS date) = '{today}'";
             List<RequestModel> requestModelList = this.ObtenerListaSQL<RequestModel>(query).ToList();
 
@@ -121,7 +120,11 @@ namespace ParentalControl.WinService.Business.ParentalControl
             if (requestModelList.Count > 0)
             {
                 newSchedule.ScheduleStartTime = scheduleModel.ScheduleStartTime;
-                newSchedule.ScheduleEndTime = scheduleModel.ScheduleEndTime.AddMinutes(Decimal.ToDouble(requestModelList.FirstOrDefault().RequestTime));
+                var horasAdicionales = Decimal.ToDouble(Math.Truncate(requestModelList.FirstOrDefault().RequestTime));
+                string numStr = requestModelList.FirstOrDefault().RequestTime.ToString();
+                decimal numDecimal = Decimal.Parse("0," + numStr.Split('.')[1]);
+                var minutosAdicionales = Decimal.ToDouble(numDecimal);
+                newSchedule.ScheduleEndTime = scheduleModel.ScheduleEndTime.AddHours(horasAdicionales).AddMinutes(minutosAdicionales);
 
             }
             else
