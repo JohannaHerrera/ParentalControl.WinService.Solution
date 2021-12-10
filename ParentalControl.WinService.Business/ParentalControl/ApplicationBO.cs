@@ -53,6 +53,14 @@ namespace ParentalControl.WinService.Business.ParentalControl
                         $"'{appName}', {constants.Access}, {constants.Access}, '{creationDate}')";
 
                 execute = SQLConexionDataBase.Execute(query);
+
+                if (execute)
+                {
+                    query = $"INSERT INTO AppDevice VALUES (NULL, {deviceId}, " +
+                            $"'{appName}', '{creationDate}')";
+
+                    execute = SQLConexionDataBase.Execute(query);
+                }
             }
 
             return execute;
