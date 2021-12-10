@@ -183,7 +183,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                         }
                                     }catch(Exception ex)
                                     {
-
+                                        MessageBox.Show("No se pudo bloquear la web Drogas " + ex.Message);
                                     }    
                                 }                    
                                 //Adult
@@ -202,7 +202,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                     }
                                     catch (Exception ex)
                                     {
-
+                                        MessageBox.Show("No se pudo bloquear la web Adultos " + ex.Message);
                                     }
                                 }    
                                 //Games
@@ -219,11 +219,29 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                         }
                                     }catch(Exception ex)
                                     {
-
+                                        MessageBox.Show("No se pudo bloquear la web Juegos " + ex.Message);
+                                    }
+                                }
+                                //Violence
+                                if (web.WebConfigurationAccess == true && web.CategoryId == 4)
+                                {
+                                    try
+                                    {
+                                        string violence = @"violence.txt";
+                                        bool existencia = GetExistence(violence);
+                                        if (existencia == false)// Si no existe 
+                                        {
+                                            AddHost(violence);
+                                            KillNavigateProcess();
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show("No se pudo bloquear la web Violencia " + ex.Message);
                                     }
                                 }
                                 //Redes
-                                if (web.WebConfigurationAccess == true && web.CategoryId == 4)
+                                if (web.WebConfigurationAccess == true && web.CategoryId == 5)
                                 {
                                     try
                                     {
@@ -236,8 +254,10 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                         }
                                     }catch(Exception ex)
                                     {
+                                        MessageBox.Show("No se pudo bloquear la web Redes Sociales " + ex.Message);
                                     }
                                 }
+                                
                                 //******************************* DESBLOQUEO **********************************************
                                 //Drugs
                                 if (web.WebConfigurationAccess == false && web.CategoryId == 1)
@@ -289,22 +309,39 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                         MessageBox.Show("No se pudo desbloquear la web Juegos " + ex.Message);
                                     }    
                                 }
-                                // SocialNetwork
+                                // Violence
                                 if (web.WebConfigurationAccess == false && web.CategoryId == 4)
                                 {
                                     try{
-                                        string social = @"socialN.txt";
-                                        bool existencia = GetExistence(social);
+                                        string violence = @"violence.txt";
+                                        bool existencia = GetExistence(violence);
                                         if (existencia==true)
                                         {
-                                            DeleteHost(social);
+                                            DeleteHost(violence);
                                         }
                                     }
                                     catch(Exception ex)
                                     {
-                                        MessageBox.Show("No se pudo desbloquear la web Redes sociales "+ ex.Message);
+                                        MessageBox.Show("No se pudo desbloquear la web Violence "+ ex.Message);
                                     }                                
-                                }    
+                                }
+                                // SocialNetwork
+                                if (web.WebConfigurationAccess == false && web.CategoryId == 5)
+                                {
+                                    try
+                                    {
+                                        string social = @"socialN.txt";
+                                        bool existencia = GetExistence(social);
+                                        if (existencia == true)
+                                        {
+                                            DeleteHost(social);
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show("No se pudo desbloquear la web Redes sociales " + ex.Message);
+                                    }
+                                }
                             }  
                         }
                         //this.webChanges = false;//Variable que local, bandera de los cambios

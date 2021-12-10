@@ -25,12 +25,15 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
 
 
         #region protected override functions
-
+        /// <summary>
+        /// Funcionalidad del procesador
+        /// </summary>
+        /// <param name="operationContext"></param>
         protected override void ExecuteInternal(OperationContext operationContext)
         {
             try
             {
-                // Se verifica que la cuenta de Windows actual esté vinculada a un infante..
+                // Se verifica que la cuenta de Windows actual esté vinculada a un infante.
                 DeviceBO deviceBO = new DeviceBO();
                 WindowsAccountModel windowsAccountModel = deviceBO.GetInfantAccount(Environment.UserName);
 
@@ -45,16 +48,47 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                     InfantAccountModel infantAccount = deviceBO.GetInfantAccountLinked(windowsAccountModel.InfantAccountId);
                     DateTime dateValue = DateTime.Now;
                     string dia = dateValue.ToString("dddd", new CultureInfo("es-ES"));
+                    List<DeviceUseModel> deviceUseModelList = new List<DeviceUseModel>();
 
                     // Se obtiene el uso del dispositivo para la cuenta de infante
-                    List<DeviceUseModel> deviceUseModelList = deviceUseBO.GetDeviceUse(windowsAccountModel.InfantAccountId, dia);
+                    deviceUseModelList = deviceUseBO.GetDeviceUse(windowsAccountModel.InfantAccountId, dia);
 
-                    // Una vez obtenido el uso del dispositivo procedo a bloquear el dispositivo en el horario y día establecido.
+                    // Una vez obtenido el uso del dispositivo se procede a bloquear el dispositivo en
+                    // el horario y día establecido.
                     if (deviceUseModelList.Count > 0)
                     {
                         foreach (var deviceUse in deviceUseModelList)
                         {
-                            if (scheduleBO.CompareScheduleWithSystemTime(deviceUse.ScheduleId))
+                            ScheduleModel scheduleModel = scheduleBO.GetSchedule(deviceUse.ScheduleId);
+
+                            //Se verifica si en el día actual el infante realizó una petición de aumento de tiempo
+                            //de uso del dispositvo, en caso de que esté aprobada, se tomará en cuenta el incremento.
+                            if (scheduleBO.DeviceUseRequestApproved(windowsAccountModel.InfantAccountId))
+                            {
+                                scheduleModel = scheduleBO.GetNewScheduleIfDeviceUseRequestIsApproved(scheduleModel, windowsAccountModel.InfantAccountId);
+                            }
+                            //Cuando queden aproximadamente 10 minutos para el fin del uso del dispositivo, se enviará un mensaje.
+                            if (scheduleBO.ShowMessageScheduleWithSystemTime(scheduleModel,10))
+                            {
+                                DialogResult res = MessageBox.Show("Por Favor Guarde su trabajo, el dispositivo se bloqueará en aproximadamente 10 minutos", "¡AVISO!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            }
+                            //Cuando queden aproximadamente 6 minutos para el fin del uso del dispositivo, se enviará un mensaje.
+                            else if (scheduleBO.ShowMessageScheduleWithSystemTime(scheduleModel, 6))
+                            {
+                                DialogResult res = MessageBox.Show("Por Favor Guarde su trabajo, el dispositivo se bloqueará en aproximadamente 6 minutos", "¡AVISO!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            }
+                            //Cuando queden aproximadamente 3 minutos para el fin del uso del dispositivo, se enviará un mensaje.
+                            else if (scheduleBO.ShowMessageScheduleWithSystemTime(scheduleModel, 3))
+                            {
+                                DialogResult res = MessageBox.Show("Por Favor Guarde su trabajo, el dispositivo se bloqueará en aproximadamente 3 minutos", "¡AVISO!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            }
+                            //Cuando queden aproximadamente 1 minutos para el fin del uso del dispositivo, se enviará un mensaje.
+                            else if (scheduleBO.ShowMessageScheduleWithSystemTime(scheduleModel, 1))
+                            {
+                                DialogResult res = MessageBox.Show("Por Favor Guarde su trabajo, el dispositivo se bloqueará en aproximadamente 1 minutos", "¡AVISO!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            }
+                            //El dispositivo se bloqueará en caso de que esté fuera del tiempo de uso.
+                            else if (!scheduleBO.CompareScheduleWithSystemTime(scheduleModel))
                             {
                                 Process.Start(@"C:\WINDOWS\system32\rundll32.exe", "user32.dll,LockWorkStation");
                             }                            

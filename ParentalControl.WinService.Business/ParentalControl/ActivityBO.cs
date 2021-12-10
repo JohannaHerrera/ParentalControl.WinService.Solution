@@ -36,7 +36,7 @@ namespace ParentalControl.WinService.Business.ParentalControl
                 int timesAccess = activityModelList.FirstOrDefault().ActivityTimesAccess + 1;
                 string description = $"{dateNow} - El/La infante intentó acceder a {objectActivity} por {timesAccess} ocasiones.";
 
-                query = $"UPDATE Activity SET ActivityTimesAccess = timesAccess, ActivityDescription = '{description}'" +
+                query = $"UPDATE Activity SET ActivityTimesAccess = {timesAccess}, ActivityDescription = '{description}'" +
                         $" WHERE ActivityId = {activityId}";
 
                 execute = SQLConexionDataBase.Execute(query);
