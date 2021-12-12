@@ -57,7 +57,19 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                 if (app.AppName.ToUpper().Contains(process.ProcessName.ToUpper()) ||
                                     process.ProcessName.ToUpper().Contains(app.AppName.ToUpper()))
                                 {
-                                    process.Kill();
+                                    // Antes de cerrar el proceso verifico si no tiene configurado tiempo de uso
+                                    if (app.ScheduleId != null)
+                                    {
+                                        // Valido si puede usar según la hora actual
+                                        if(!(applicationBO.VerifyAppUse(infantAccount.InfantAccountId, app.AppId)))
+                                        {
+                                            process.Kill();
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        process.Kill();
+                                    }
 
                                     activityBO.RegisterApps(infantAccount.InfantAccountId, app.AppName);
 
