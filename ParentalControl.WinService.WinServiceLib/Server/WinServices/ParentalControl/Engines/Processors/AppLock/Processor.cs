@@ -80,8 +80,11 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                         // Valido si no existe una petición de acceso sobre la aplicación
                                         if (!requestBO.VerifyRequest(constants.AppConfiguration, app.AppName))
                                         {
+                                            string deviceCode = deviceBO.GetDeviceIdentifier();
+                                            string deviceName = deviceBO.GetDeviceName(deviceCode);
+
                                             string body = $"<p>¡Hola! <br> <br> Queremos informarte que <b>{infantAccount.InfantName}</b> " +
-                                               $"está solicitando que le habilites la aplicación <b>{app.AppName}</b>. <br>" +
+                                               $"está solicitando que le habilites la aplicación <b>{app.AppName}</b> del dispositivo {deviceName}. <br>" +
                                                $"Para aprobar o desaprobar esta petición ingresa a nuestro " +
                                                $"sistema y dirígete a la sección de <b>Notificaciones</b>.<p>";
 
