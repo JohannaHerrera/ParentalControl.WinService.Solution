@@ -85,7 +85,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                             //Cuando queden aproximadamente 1 minutos para el fin del uso del dispositivo, se enviará un mensaje.
                             else if (scheduleBO.ShowMessageScheduleWithSystemTime(scheduleModel, 1))
                             {
-                                DialogResult res = MessageBox.Show("Por Favor Guarde su trabajo, el dispositivo se bloqueará en aproximadamente 1 minutos", "¡AVISO!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                DialogResult res = MessageBox.Show("Por Favor Guarde su trabajo, el dispositivo se bloqueará en aproximadamente 1 minuto", "¡AVISO!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                             }
                             //El dispositivo se bloqueará en caso de que esté fuera del tiempo de uso.
                             else if (!scheduleBO.CompareScheduleWithSystemTime(scheduleModel))

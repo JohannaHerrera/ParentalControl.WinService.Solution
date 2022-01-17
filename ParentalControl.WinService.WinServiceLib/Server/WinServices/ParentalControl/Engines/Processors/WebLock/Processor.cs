@@ -46,8 +46,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                         process.ProcessName.ToUpper().Contains("FIREFOX") ||
                         process.ProcessName.ToUpper().Contains("OPERA") ||
                         process.ProcessName.ToUpper().Contains("VIVALDI") ||
-                        process.ProcessName.ToUpper().Contains("BRAVE")||
-                        process.ProcessName.ToUpper().Contains("WHATSAPP"))
+                        process.ProcessName.ToUpper().Contains("BRAVE"))
                     {
                         process.Kill();
                     }
@@ -83,7 +82,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                 }
             }catch(Exception ex)
             {
-                MessageBox.Show("Error al desbloquear webs" + ex);
+                //MessageBox.Show("Error al desbloquear webs" + ex);
             }
 }
         public void AddHost(string file)
@@ -102,7 +101,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                 File.AppendAllLines(path, list);
             }catch(Exception ex)
             {
-                MessageBox.Show("Error al bloquear webs" + ex);
+                //MessageBox.Show("Error al bloquear webs" + ex);
             }
 
         }
@@ -183,7 +182,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                         }
                                     }catch(Exception ex)
                                     {
-                                        MessageBox.Show("No se pudo bloquear la web Drogas " + ex.Message);
+                                       // MessageBox.Show("No se pudo bloquear la web Drogas " + ex.Message);
                                     }    
                                 }                    
                                 //Adult
@@ -202,7 +201,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                     }
                                     catch (Exception ex)
                                     {
-                                        MessageBox.Show("No se pudo bloquear la web Adultos " + ex.Message);
+                                       // MessageBox.Show("No se pudo bloquear la web Adultos " + ex.Message);
                                     }
                                 }    
                                 //Games
@@ -219,7 +218,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                         }
                                     }catch(Exception ex)
                                     {
-                                        MessageBox.Show("No se pudo bloquear la web Juegos " + ex.Message);
+                                       // MessageBox.Show("No se pudo bloquear la web Juegos " + ex.Message);
                                     }
                                 }
                                 //Violence
@@ -237,7 +236,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                     }
                                     catch (Exception ex)
                                     {
-                                        MessageBox.Show("No se pudo bloquear la web Violencia " + ex.Message);
+                                       // MessageBox.Show("No se pudo bloquear la web Violencia " + ex.Message);
                                     }
                                 }
                                 //Redes
@@ -254,7 +253,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                         }
                                     }catch(Exception ex)
                                     {
-                                        MessageBox.Show("No se pudo bloquear la web Redes Sociales " + ex.Message);
+                                       // MessageBox.Show("No se pudo bloquear la web Redes Sociales " + ex.Message);
                                     }
                                 }
                                 
@@ -273,7 +272,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                     }
                                     catch (Exception ex)
                                     {
-                                        MessageBox.Show("No se pudo desbloquear la web Drogas " + ex.Message);
+                                        //MessageBox.Show("No se pudo desbloquear la web Drogas " + ex.Message);
                                     }
                                 }
                                 //Adult
@@ -290,7 +289,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                     }
                                     catch (Exception ex)
                                     {
-                                        MessageBox.Show("No se pudo desbloquear la web Contenido Adulto" + ex.Message);
+                                        //MessageBox.Show("No se pudo desbloquear la web Contenido Adulto" + ex.Message);
                                     }
                                 }
                                 // Games
@@ -306,7 +305,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                         }
                                     }catch(Exception ex)
                                     {
-                                        MessageBox.Show("No se pudo desbloquear la web Juegos " + ex.Message);
+                                        //MessageBox.Show("No se pudo desbloquear la web Juegos " + ex.Message);
                                     }    
                                 }
                                 // Violence
@@ -322,7 +321,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                     }
                                     catch(Exception ex)
                                     {
-                                        MessageBox.Show("No se pudo desbloquear la web Violence "+ ex.Message);
+                                       // MessageBox.Show("No se pudo desbloquear la web Violence "+ ex.Message);
                                     }                                
                                 }
                                 // SocialNetwork
@@ -339,7 +338,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                     }
                                     catch (Exception ex)
                                     {
-                                        MessageBox.Show("No se pudo desbloquear la web Redes sociales " + ex.Message);
+                                        //MessageBox.Show("No se pudo desbloquear la web Redes sociales " + ex.Message);
                                     }
                                 }
                             }  
@@ -350,7 +349,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
             }
         }
         #endregion protected override functions
