@@ -1,0 +1,2 @@
+SET SERVICENAME=ParentalControl.WinService
+NET START "%SERVICENAME%"
