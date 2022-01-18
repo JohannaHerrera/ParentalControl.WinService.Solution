@@ -57,7 +57,19 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                 if (app.AppName.ToUpper().Contains(process.ProcessName.ToUpper()) ||
                                     process.ProcessName.ToUpper().Contains(app.AppName.ToUpper()))
                                 {
-                                    process.Kill();
+                                    // Antes de cerrar el proceso verifico si no tiene configurado tiempo de uso
+                                    if (app.ScheduleId != null)
+                                    {
+                                        // Valido si puede usar según la hora actual
+                                        if(!(applicationBO.VerifyAppUse(infantAccount.InfantAccountId, app.AppId)))
+                                        {
+                                            process.Kill();
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        process.Kill();
+                                    }
 
                                     activityBO.RegisterApps(infantAccount.InfantAccountId, app.AppName);
 
@@ -68,8 +80,11 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                                         // Valido si no existe una petición de acceso sobre la aplicación
                                         if (!requestBO.VerifyRequest(constants.AppConfiguration, app.AppName))
                                         {
+                                            string deviceCode = deviceBO.GetDeviceIdentifier();
+                                            string deviceName = deviceBO.GetDeviceName(deviceCode);
+
                                             string body = $"<p>¡Hola! <br> <br> Queremos informarte que <b>{infantAccount.InfantName}</b> " +
-                                               $"está solicitando que le habilites la aplicación <b>{app.AppName}</b>. <br>" +
+                                               $"está solicitando que le habilites la aplicación <b>{app.AppName}</b> del dispositivo {deviceName}. <br>" +
                                                $"Para aprobar o desaprobar esta petición ingresa a nuestro " +
                                                $"sistema y dirígete a la sección de <b>Notificaciones</b>.<p>";
 

@@ -90,6 +90,25 @@ namespace ParentalControl.WinService.Business.ParentalControl
         }
 
         /// <summary>
+        /// Método para obtener el nombre del dispositivo
+        /// </summary>
+        /// <returns>deviceName</returns>
+        public string GetDeviceName(string deviceCode)
+        {
+            string deviceName = string.Empty;
+            string query = $"SELECT * FROM DevicePC WHERE DevicePCCode = '{deviceCode}'";
+
+            List<DeviceModel> deviceModelList = this.ObtenerListaSQL<DeviceModel>(query).ToList();
+
+            if (deviceModelList.Count > 0)
+            {
+                deviceName = deviceModelList.FirstOrDefault().DevicePCName;
+            }
+
+            return deviceName;
+        }
+
+        /// <summary>
         /// Método para obtener las cuentas Windows del dispositivo
         /// </summary>
         /// <returns>List<string></returns>

@@ -2,6 +2,7 @@
 using ParentalControl.WinService.Business.Enums;
 using ParentalControl.WinService.Data;
 using ParentalControl.WinService.Models.Device;
+using ParentalControl.WinService.Models.ScheduleAccount;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -27,6 +28,40 @@ namespace ParentalControl.WinService.Business.ParentalControl
             List<ApplicationModel> applicationModelList = this.ObtenerListaSQL<ApplicationModel>(query).ToList();
 
             return applicationModelList;
+        }
+
+        /// <summary>
+        /// Método para verificar si puede utilizar la App
+        /// </summary>
+        /// <returns>bool: TRUE(puede usar), FALSE(no puede usar)</returns>
+        public bool VerifyAppUse(int infantId, int appId)
+        {
+            bool permission = false;
+            string query = $"SELECT * FROM App WHERE InfantAccountId = {infantId}" +
+                           $" AND AppId = {appId}";
+
+            ApplicationModel applicationModel = this.ObtenerListaSQL<ApplicationModel>(query).FirstOrDefault();
+
+            if(applicationModel != null)
+            {
+                query = $"SELECT * FROM Schedule WHERE ScheduleId = {applicationModel.ScheduleId}";
+                ScheduleModel scheduleModel = this.ObtenerListaSQL<ScheduleModel>(query).FirstOrDefault();
+
+                string horaInicio = scheduleModel.ScheduleStartTime.ToString("HH:mm");
+                string horaFin = scheduleModel.ScheduleEndTime.ToString("HH:mm");
+                string horaActual = DateTime.Now.ToString("HH:mm");
+
+                DateTime.ParseExact(horaActual, "HH:mm", null);
+                DateTime.ParseExact(horaInicio, "HH:mm", null);
+                DateTime.ParseExact(horaFin, "HH:mm", null);
+
+                if (horaActual.CompareTo(horaInicio) >= 0 && horaActual.CompareTo(horaFin) <= 0)
+                {
+                    return permission = true;
+                }
+            }
+
+            return permission;
         }
 
         /// <summary>

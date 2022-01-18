@@ -1,5 +1,6 @@
 ﻿using ParentalControl.WinService.Business.Enums;
 using ParentalControl.WinService.Data;
+using ParentalControl.WinService.Models.Device;
 using ParentalControl.WinService.Models.Request;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,16 @@ namespace ParentalControl.WinService.Business.ParentalControl
         public bool RegisterRequestApp(int infantId, int parentId, string appName)
         {
             Constants constants = new Constants();
+            DeviceBO deviceBO = new DeviceBO();
             var dateCreation = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             bool execute = false;
-            
-            string query = $"INSERT INTO Request VALUES ({constants.AppConfiguration}, {infantId}," +
+            string deviceCode = deviceBO.GetDeviceIdentifier();
+            string query = $"SELECT * FROM DevicePC WHERE DevicePCCode = '{deviceCode}'";
+            int deviceId = this.ObtenerListaSQL<DeviceModel>(query).FirstOrDefault().DevicePCId;
+
+            query = $"INSERT INTO Request VALUES ({constants.AppConfiguration}, {infantId}," +
                            $" '{appName}', NULL, {constants.RequestStateCreated}," +
-                           $" '{dateCreation}', {parentId})";
+                           $" '{dateCreation}', {parentId}, {deviceId}, NULL)";
             execute = SQLConexionDataBase.Execute(query);
             
             return execute;
