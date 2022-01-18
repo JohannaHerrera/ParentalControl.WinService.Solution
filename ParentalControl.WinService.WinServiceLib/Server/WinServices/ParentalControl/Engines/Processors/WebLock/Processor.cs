@@ -46,8 +46,7 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                         process.ProcessName.ToUpper().Contains("FIREFOX") ||
                         process.ProcessName.ToUpper().Contains("OPERA") ||
                         process.ProcessName.ToUpper().Contains("VIVALDI") ||
-                        process.ProcessName.ToUpper().Contains("BRAVE")||
-                        process.ProcessName.ToUpper().Contains("WHATSAPP"))
+                        process.ProcessName.ToUpper().Contains("BRAVE"))
                     {
                         process.Kill();
                     }
