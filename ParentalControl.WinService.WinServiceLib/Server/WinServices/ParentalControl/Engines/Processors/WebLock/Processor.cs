@@ -41,8 +41,8 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                 foreach (Process process in Process.GetProcesses())
                 {
                     if (process.ProcessName.ToUpper().Contains("CHROME") ||
-                        process.ProcessName.ToUpper().Contains("EDGE") ||
-                        process.ProcessName.ToUpper().Contains("EXPLORER") ||
+                        //process.ProcessName.ToUpper().Contains("EDGE") ||
+                        //process.ProcessName.ToUpper().Contains("EXPLORER") ||
                         process.ProcessName.ToUpper().Contains("FIREFOX") ||
                         process.ProcessName.ToUpper().Contains("OPERA") ||
                         process.ProcessName.ToUpper().Contains("VIVALDI") ||
