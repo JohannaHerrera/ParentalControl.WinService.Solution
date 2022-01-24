@@ -119,23 +119,23 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                         }                        
                     }
 
-                    // Verifico si se han instalado nuevas aplicaciones
-                    List<string> newInstalledApps = applicationBO.GetNewInstalledApps();
-                    if (newInstalledApps.Count > 0)
-                    {
-                        List<ApplicationModel> applicationsRegistered = applicationBO.GetAppsDevice(windowsAccountModel.InfantAccountId, windowsAccountModel.DevicePCId);
+                    //// Verifico si se han instalado nuevas aplicaciones
+                    //List<string> newInstalledApps = applicationBO.GetNewInstalledApps();
+                    //if (newInstalledApps.Count > 0)
+                    //{
+                    //    List<ApplicationModel> applicationsRegistered = applicationBO.GetAppsDevice(windowsAccountModel.InfantAccountId, windowsAccountModel.DevicePCId);
                         
-                        foreach (var newApp in newInstalledApps)
-                        {
-                            bool containsItem = applicationsRegistered.Any(item => item.DevicePCId == windowsAccountModel.DevicePCId
-                                                            && item.AppName == newApp && item.InfantAccountId == windowsAccountModel.InfantAccountId);
+                    //    foreach (var newApp in newInstalledApps)
+                    //    {
+                    //        bool containsItem = applicationsRegistered.Any(item => item.DevicePCId == windowsAccountModel.DevicePCId
+                    //                                        && item.AppName == newApp && item.InfantAccountId == windowsAccountModel.InfantAccountId);
 
-                            if (!containsItem)
-                            {
-                                applicationBO.RegisterApps(windowsAccountModel.InfantAccountId, newApp);
-                            }
-                        }
-                    }                  
+                    //        if (!containsItem)
+                    //        {
+                    //            applicationBO.RegisterApps(windowsAccountModel.InfantAccountId, newApp);
+                    //        }
+                    //    }
+                    //}                  
                 }
 
                 // Verifico si hay nuevas cuentas Windows por registrar
