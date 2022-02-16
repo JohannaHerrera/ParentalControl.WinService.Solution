@@ -141,19 +141,19 @@ namespace ParentalControl.WinService.WinServiceLib.Server.WinServices.ParentalCo
                 // Verifico si hay nuevas cuentas Windows por registrar
                 List<string> windowsAccounts = deviceBO.GetWindowsAccounts();
 
-                if (windowsAccounts.Count > 0)
-                {
-                    foreach (var account in windowsAccounts)
-                    {
-                        List<WindowsAccountModel> verifyAccount = deviceBO.VerifyWindowsAccount(account);
+                //if (windowsAccounts.Count > 0)
+                //{
+                //    foreach (var account in windowsAccounts)
+                //    {
+                //        List<WindowsAccountModel> verifyAccount = deviceBO.VerifyWindowsAccount(account);
 
-                        if (verifyAccount.Count == 0)
-                        {
-                            deviceBO.RegisterWindowsAccount(account);
-                        }
-                    }
-                    
-                }
+                //        if (verifyAccount.Count == 0)
+                //        {
+                //            deviceBO.RegisterWindowsAccount(account);
+                //        }
+                //    }
+
+                //}
 
                 // Si alguna cuenta Windows se eliminó también elimino de la BD
                 List<WindowsAccountModel> windowsAccountModelList = deviceBO.GetWindowsAccountsFromDB();
